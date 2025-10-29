@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <style>
+        @page {
+            margin: 40px;
+        }
+        body {
+            font-family: 'NanumGothic','NotoSansKR', sans-serif;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        h2 {
+            text-align: center;
+            margin: 20px 0 10px 0;
+        }
+        table {
+            width: 100%;
+             border-collapse: collapse; 
+             margin-bottom: 30px; 
+             page-break-inside: auto;
+             -fs-table-paginate: paginate;
+        }
+        thead {
+            display: table-header-group;
+            background-color: #f2f2f2;
+        }
+/*         tbody { */
+/* 		    display: table-row-group; */
+/* 		} */
+        th, td {
+            border: 1px solid #0E0E0E;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            font-weight: normal;
+        }
+        tr {  
+              page-break-inside: avoid;  
+        } 
+        .trainingTitle {
+            display: block;
+            padding: 8px 4px;
+            border-bottom: 1px solid #0E0E0E; /* 가로 구분선 */
+            text-align: left;
+            margin-left: -6px;
+            margin-right: -6px;
+            margin-top: -7px;
+        }
+        .content-row {
+            display: block;
+            width: 100%;
+            padding: 8px 4px;
+/*             white-space: pre-wrap; /* 긴 텍스트 줄 바꿈 처리 */
+            text-align: left;
+        }
+        
+
+        .session-header {
+            background-color: #f0f0ff; /* 강조 배경색 */
+        }
+
+        .session-data {
+            background-color: #f0f0ff; /* 강조 배경색 */
+            padding: 8px; /* td padding 복원 */
+        }
+        
+        .studentReport th {
+            background-color: #DCE4F2;
+        }
+        
+        .educationReport th {
+            background-color: #BDD7EE;
+        }
+
+		.session {
+			background-color: #DDEBF7;
+		}
+		
+		.trainingTitle {
+			background-color: #DDEBF7;
+		}
+    </style>
+</head>
+<body>
+    <h2>교육 과정 정보</h2>
+<table class="educationReport" style="page-break-after: always;">
+    <thead>
+        <tr>
+            <th style="width: 50px">차시</th>
+            <th>훈련내용</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="edu : ${educations}">
+            <td class="session" th:text="${edu.session}"></td>
+            <!-- 훈련내용을 제목/내용으로 분리하고 가로 구분선을 추가 -->
+            <td>
+                <!-- 훈련 제목 (상단, 가로선 포함) -->
+                <div th:text="${edu.trainingTitle}" class="trainingTitle"></div>
+                <!-- 훈련 내용 (하단) -->
+                <div th:text="${edu.trainingContent}" class="content-row"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+    <h2>수강생 보고서</h2>
+    <table class="studentReport">
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>이름</th>
+                <th>생년월일</th>
+                <th>진행률</th>
+                <th>중간평가</th>
+                <th>기말평가</th>
+                <th>총점</th>
+                <th>수료여부</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="r, stat : ${reports}">
+                <td th:text="${stat.count}"></td>
+                <td th:text="${r.studentName}"></td>
+                <td th:text="${r.birthday}"></td>
+                <td th:text="${r.progressRate}"></td>
+                <td th:text="${r.midtermEvaluation}"></td>
+                <td th:text="${r.finalExam}"></td>
+                <td th:text="${r.totalScore}"></td>
+                <td th:text="${r.completionStatus}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

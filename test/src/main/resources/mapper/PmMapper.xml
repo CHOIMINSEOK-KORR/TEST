@@ -1,0 +1,32 @@
+<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+<!--<mapper namespace="com.example.demo.mapper.EnrollmentMapper">-->
+
+<!--    <select id="getData" resultType="com.example.demo.dto.testDTO">-->
+<!--        SELECT -->
+<!--            id, -->
+<!--            student_name AS studentName,  course_title AS courseTitle, -->
+<!--            completion_date AS completionDate-->
+<!--        FROM -->
+<!--            your_table_name  ORDER BY -->
+<!--            id ASC-->
+<!--    </select>-->
+    
+<!--</mapper>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

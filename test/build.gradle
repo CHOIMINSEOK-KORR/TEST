@@ -37,8 +37,21 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.5'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+	
+	// 엑셀 라이브러리
+	implementation 'org.apache.poi:poi:5.2.5' // POI 핵심 (ex: .xls)
+	implementation 'org.apache.poi:poi-ooxml:5.2.5' // OOXML (ex: .xlsx)
+	
+	// Flying Saucer Core: HTML을 PDF로 변환하는 핵심 라이브러리
+    implementation 'org.xhtmlrenderer:flying-saucer-pdf:9.1.22'
+    implementation 'org.xhtmlrenderer:flying-saucer-pdf-openpdf:9.1.22' // OpenPDF 기반 PDF 생성
+    
+    // OpenHTMLToPDF 의존성
+    implementation 'com.openhtmltopdf:openhtmltopdf-core:1.0.10'
+    implementation 'com.openhtmltopdf:openhtmltopdf-pdfbox:1.0.10'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+

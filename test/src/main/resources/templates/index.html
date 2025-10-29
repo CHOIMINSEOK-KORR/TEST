@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+		<h1>메인</h1>
+		<button onclick="downloadCertificate(1)">1번 수료증 받기</button>
+		<button onclick="downloadPDF()">보고서 PDF 다운 받기</button><br>
+		<br>
+		<button onclick="downloadExcel()">엑셀 다운로드</button>
+		<a href="/test/upload-page">엑셀 업로드</a>
+</body>
+
+<script>
+	function downloadCertificate(id) {
+		window.location.href = '/test/download/pdf/' + id;
+	}
+	
+	function downloadPDF() {
+		window.location.href = '/test/report/pdf/final';
+	}
+	
+	function downloadExcel() {
+		window.location.href = '/test/excel/download';
+	}
+</script>
+</html>

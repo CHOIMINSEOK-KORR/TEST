@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+<style>
+    @page {
+        size: A4;
+        margin: 30px;
+    }
+
+    /* [핵심 1] paged media 깨짐 방지 */
+    html, body {
+        overflow: visible !important;
+        height: auto;
+    }
+
+    body {
+        font-family: 'Gulim', sans-serif;
+        text-align: center;
+    }
+    h1 { text-align: center; margin-bottom: 20px; }
+
+    /* 공통 테이블 스타일 */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+        margin: auto;
+        border: 1px solid #555;
+    }
+    th, td {
+        border: 1px solid #555;
+        padding: 8px;
+        text-align: center;
+    }
+    th {
+        background-color: #d8e0f1;
+        font-weight: normal;
+    }
+
+    /* [핵심 2] thead 반복 */
+    thead { display: table-header-group; }
+    .report-table, .education-table { -fs-table-paginate: repeat-header; }
+
+    /* --- 보고서 테이블 --- */
+    .report-table { font-size: 15px; }
+    .report-table th, .report-table td { padding: 6px; }
+
+    /* --- 차시별 교육 테이블 --- */
+    .education-table { text-align: left; }
+    .education-table th, .education-table td { border-color: #555; }
+
+    /* [핵심 3] 차시 묶음(=tbody) 단위로 분할 금지 */
+    .education-table tbody.session-group {
+        page-break-inside: avoid;
+        -fs-page-break-inside: avoid;
+        -fs-keep-together: always;       /* 가능한 한 묶어서 이동 */
+        /* 필요 시 다음 행과 붙이기: -fs-keep-with-next: always; */
+    }
+
+    /* 보강: 행 단위 쪼갬 방지 */
+    .education-table tr {
+  page-break-inside: avoid;
+  -fs-page-break-inside: avoid;
+}
+
+    /* 셀 내부 레이아웃 */
+    .education-table .content-cell { display: block; padding: 0; }
+    .education-table .training-title,
+    .education-table .training-content { padding: 4px 8px; text-align: left; }
+    .education-table .content-divider {
+        border-bottom: 1px solid #555;
+        margin: 0; padding: 0; height: 0;
+    }
+    .education-table .session-cell { vertical-align: top; width: 50px; text-align: center; }
+</style>
+</head>
+<body>
+
+<h1>학생 보고서</h1>
+
+<!-- 1) 학생 보고서 표 -->
+<table class="report-table">
+    <thead>
+        <tr>
+            <th>번호</th>
+            <th>이름</th>
+            <th>생년월일</th>
+            <th>진행률</th>
+            <th>중간평가</th>
+            <th>기말고사</th>
+            <th>총점</th>
+            <th>수료상태</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="report : ${reports}">
+            <td th:text="${report.id}"></td>
+            <td th:text="${report.studentName}"></td>
+            <td th:text="${report.birthday}"></td>
+            <td th:text="${report.progressRate}"></td>
+            <td th:text="${report.midtermEvaluation}"></td>
+            <td th:text="${report.finalExam}"></td>
+            <td th:text="${report.totalScore}"></td>
+            <td th:text="${report.completionStatus}"></td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- 강제 페이지 분리(보고서 → 차시표) -->
+<div style="page-break-before: always;"></div>
+
+<h2>차시별 교육 내용</h2>
+
+<!-- 2) 차시별 교육 표 : "차시 = tbody 하나" -->
+<table class="education-table">
+    <thead>
+        <tr>
+            <th style="width: 50px;">차시</th>
+            <th>훈련 내용</th>
+        </tr>
+    </thead>
+
+    <!-- ★ 포인트: tbody.session-group를 차시마다 생성 -->
+    <tbody class="session-group" th:each="edu : ${educations}">
+        <tr>
+            <td class="session-cell" th:text="${edu.session}"></td>
+            <td class="content-cell">
+                <div class="training-title" th:text="${edu.trainingTitle}"></div>
+                <div class="content-divider"></div>
+                <div class="training-content" th:text="${edu.trainingContent}"></div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
