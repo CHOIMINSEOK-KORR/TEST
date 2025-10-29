@@ -46,7 +46,7 @@ public class ReportController2 {
 
         
         // pdf변환기는 html문자열을 요구하기에 직접 타임리프를 돌려서 렌더링 해야함
-        String htmlContent = templateEngine.process("report2", context);
+        String htmlContent = templateEngine.process("report2", context);  
 
         // 메모리 버퍼에 저장하기 위해서 ByteArrayOutputStream 객체 사용
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
