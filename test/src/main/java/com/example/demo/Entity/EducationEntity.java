@@ -6,7 +6,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "education")
 public class EducationEntity {
@@ -25,40 +29,6 @@ public class EducationEntity {
 	private String trainingContent;
 
     
-    // getter
-	public Long getId() {
-		return id;
-	}
-
-	public String getSession() {
-		return session;
-	}
-
-	public String getTrainingTitle() {
-		return trainingTitle;
-	}
-
-	public String getTrainingContent() {
-		return trainingContent;
-	}
-
-	
-	// setter
-	public void setId(Long id) {
-		this.id = id;
-	}
-	
-	public void setSession(String session) {
-		this.session = session;
-	}
-	
-	public void setTrainingTitle(String trainingTitle) {
-		this.trainingTitle = trainingTitle;
-	}
-	
-	public void setTrainingContent(String trainingContent) {
-		this.trainingContent = trainingContent;
-	}
 	
 	
 }

@@ -82,7 +82,7 @@ public class ExcelController {
             
         } catch (Exception e) {
             // 오류 발생 시 처리
-            e.printStackTrace();
+            e.printStackTrace(); //sdsd
             return "redirect:/test/upload-page?error=processing_failed";
         }
 	}

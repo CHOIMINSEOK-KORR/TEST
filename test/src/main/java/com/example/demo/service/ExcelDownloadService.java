@@ -24,58 +24,97 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.Entity.EducationEntity;
 import com.example.demo.Entity.ExcelEntity;
+import com.example.demo.repository.EducationRepository;
 import com.example.demo.repository.ExcelRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 public class ExcelDownloadService {
 
 	private final ExcelRepository excelRepository;
+	private final EducationRepository educationRepository;
 
-	public ExcelDownloadService(ExcelRepository excelRepository) {
+	public ExcelDownloadService(ExcelRepository excelRepository, EducationRepository educationRepository) {
 		this.excelRepository = excelRepository;
+        this.educationRepository = educationRepository;
 	}
+
 	// =====================
 
 
 	public ByteArrayInputStream exportExcel() throws IOException{
 		List<ExcelEntity> ExcelDataList = excelRepository.findAll();
+        List<EducationEntity> EducationDataList = educationRepository.findAll();
+
 		
 		Workbook workBook = new XSSFWorkbook();
 		Sheet sheet = workBook.createSheet("테스트");
 
-		// 헤더 폰트 스타일
+		// 헤더 폰트 스타일(ExcelEntity)
 		Font headerFont = workBook.createFont();
 		headerFont.setBold(true);
 		headerFont.setColor(IndexedColors.BLACK.getIndex());
+        
+		// 헤더 폰트 스타일(EducationEntity)
+		Font headerFont2 = workBook.createFont();
+		headerFont2.setBold(true);
+		headerFont2.setColor(IndexedColors.BLACK.getIndex());
+        // =======================================================
 		
-		// 헤더 셀 스타일
+		// 헤더 셀 스타일(ExcelEntity)
 		CellStyle headerStyle = workBook.createCellStyle();
 		headerStyle.setFont(headerFont);
+        
+		// 헤더 셀 스타일(EducationEntity)
+		CellStyle headerStyle2 = workBook.createCellStyle();
+		headerStyle2.setFont(headerFont2);
+        // =======================================================
 		
-		// 헤더 배경 색 지정
+		// 헤더 배경 색 지정(ExcelEntity)
 		headerStyle.setFillForegroundColor(IndexedColors.YELLOW.getIndex());
+        
+		// 헤더 배경 색 지정(EducationEntity)
+		headerStyle2.setFillForegroundColor(IndexedColors.SKY_BLUE.getIndex());
+        // =======================================================
 		
 		// 셀 배경을 단색으로 채우기
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+        headerStyle2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         
-        // 헤더 중앙정렬
+        // 헤더 중앙정렬(ExcelEntity)
         headerStyle.setAlignment(HorizontalAlignment.CENTER);
         headerStyle.setBorderBottom(BorderStyle.THIN);
         headerStyle.setBorderTop(BorderStyle.THIN);
         headerStyle.setBorderLeft(BorderStyle.THIN);
         headerStyle.setBorderRight(BorderStyle.THIN);
+
+        // 헤더 중앙정렬(EducationEntity)
+        headerStyle2.setAlignment(HorizontalAlignment.CENTER);
+        headerStyle2.setBorderBottom(BorderStyle.THIN);
+        headerStyle2.setBorderTop(BorderStyle.THIN);
+        headerStyle2.setBorderLeft(BorderStyle.THIN);
+        headerStyle2.setBorderRight(BorderStyle.THIN);
 		
-        // ==========================
+        // ========================================================
         
-        // 데이터 셀 스타일
+        // 데이터 셀 스타일(ExcelEntity)
         CellStyle cellStyle = workBook.createCellStyle();
         cellStyle.setBorderBottom(BorderStyle.THIN);
         cellStyle.setBorderTop(BorderStyle.THIN);
         cellStyle.setBorderLeft(BorderStyle.THIN);
         cellStyle.setBorderRight(BorderStyle.THIN);
         cellStyle.setVerticalAlignment(VerticalAlignment.TOP); // 위쪽 정렬
-        
+
+        // 데이터 셀 스타일(EducationEntity)
+        CellStyle cellStyle2 = workBook.createCellStyle();
+        cellStyle2.setBorderBottom(BorderStyle.THIN);
+        cellStyle2.setBorderTop(BorderStyle.THIN);
+        cellStyle2.setBorderLeft(BorderStyle.THIN);
+        cellStyle2.setBorderRight(BorderStyle.THIN);
+        cellStyle2.setVerticalAlignment(VerticalAlignment.TOP); // 위쪽 정렬
         
         // 데이터 초과
         CellStyle wrapCellStyle = workBook.createCellStyle();
@@ -88,7 +127,7 @@ public class ExcelDownloadService {
 		
         // ==========================
         
-        // 헤더 작성
+        // 헤더 작성(ExcelEntity)
         Row headerRow = sheet.createRow(0);
         String[] headers = {"번호", "이름", "생년월일", "진행률", "중간평가", "최종시험", "총점", "수료여부"};
         for (int i = 0; i < headers.length; i++) {
@@ -96,7 +135,7 @@ public class ExcelDownloadService {
             cell.setCellValue(headers[i]);
             cell.setCellStyle(headerStyle);
         }
-        
+
         // 데이터 작성
         int rowIdx = 1;
         final int wrapLimit = 50;
@@ -159,6 +198,57 @@ public class ExcelDownloadService {
             
             sheet.setColumnWidth(i, sheet.getColumnWidth(i) + extraPadding);
         }
+
+        // 헤더 작성(EducationEntity)
+        Row headerRow2 = sheet.createRow(34);
+        String[] headers2 = {"번호", "차수", "훈련제목", "훈련내용"};
+        for (int i = 0; i < headers2.length; i++) {
+            Cell cell = headerRow2.createCell(i);
+            cell.setCellValue(headers2[i]);
+            cell.setCellStyle(headerStyle2);
+        }
+
+        // 데이터 작성(EducationEntity)
+        int rowIdx2 = 35;
+        // final int wrapLimit = 50;
+        
+        for (EducationEntity data : EducationDataList) {
+            Row row = sheet.createRow(rowIdx2++);
+            int colIdx = 0;
+
+            Cell cell0 = row.createCell(colIdx++); // 0열 1행
+            cell0.setCellValue(data.getId());
+            cell0.setCellStyle(cellStyle);
+
+            Cell cell1 = row.createCell(colIdx++);
+            cell1.setCellValue(data.getSession());
+            cell1.setCellStyle(cellStyle2);
+
+            Cell cell2 = row.createCell(colIdx++);
+            cell2.setCellValue(data.getTrainingTitle());
+            cell2.setCellStyle(cellStyle2);
+
+            Cell cell3 = row.createCell(colIdx++);
+            cell3.setCellValue(data.getTrainingContent());
+            cell3.setCellStyle(cellStyle2);
+
+        }
+
+        // 컬럼 너비 자동 조정
+        for (int i = 0; i < headers2.length; i++) {
+            sheet.autoSizeColumn(i);
+            
+            // 현재 자동조정된 너비
+            int currentWidth = sheet.getColumnWidth(i);
+            
+            int extraPadding = 1024;
+            
+            // if(i == 1 || i == 3 || i == 5) {
+            // 	extraPadding = 3072;
+            // }
+            
+            sheet.setColumnWidth(i, sheet.getColumnWidth(i) + extraPadding);
+        }
         
         // ======================================
         
@@ -202,6 +292,8 @@ public class ExcelDownloadService {
         
         return new ByteArrayInputStream(outputStream.toByteArray());
 	}
+
+
 	
 	
 	
