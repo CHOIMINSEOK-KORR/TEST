@@ -116,7 +116,7 @@ public class ExcelDownloadService {
         cellStyle2.setBorderRight(BorderStyle.THIN);
         cellStyle2.setVerticalAlignment(VerticalAlignment.TOP); // 위쪽 정렬
         
-        // 데이터 초과
+        // 데이터 초과(ExcelEntity)
         CellStyle wrapCellStyle = workBook.createCellStyle();
         wrapCellStyle.setBorderBottom(BorderStyle.THIN);
         wrapCellStyle.setBorderTop(BorderStyle.THIN);
@@ -124,6 +124,15 @@ public class ExcelDownloadService {
         wrapCellStyle.setBorderRight(BorderStyle.THIN);
         wrapCellStyle.setWrapText(true); // 50자 이상이면 다음줄로 넘어가게 하는 메서드
         wrapCellStyle.setVerticalAlignment(VerticalAlignment.TOP);
+
+        // 데이터 초과(EducationEntity)
+        CellStyle wrapCellStyle2 = workBook.createCellStyle();
+        wrapCellStyle2.setBorderBottom(BorderStyle.THIN);
+        wrapCellStyle2.setBorderTop(BorderStyle.THIN);
+        wrapCellStyle2.setBorderLeft(BorderStyle.THIN);
+        wrapCellStyle2.setBorderRight(BorderStyle.THIN);
+        wrapCellStyle2.setWrapText(true); // 50자 이상이면 다음줄로 넘어가게 하는 메서드
+        wrapCellStyle2.setVerticalAlignment(VerticalAlignment.TOP);
 		
         // ==========================
         
@@ -144,7 +153,7 @@ public class ExcelDownloadService {
             Row row = sheet.createRow(rowIdx++);
             int colIdx = 0;
 
-            Cell cell0 = row.createCell(colIdx++); // 0열 1행
+            Cell cell0 = row.createCell(colIdx++); // 0열
             cell0.setCellValue(data.getId());
             cell0.setCellStyle(cellStyle);
 
@@ -178,9 +187,15 @@ public class ExcelDownloadService {
             cell6.setCellValue(data.getTotalScore());
             cell6.setCellStyle(cellStyle);
 
-            Cell cell7 = row.createCell(colIdx++); // 7열
-            cell7.setCellValue(data.getCompletionStatus());
-            cell7.setCellStyle(cellStyle);
+            String completionStatus = data.getCompletionStatus();
+            Cell cell7 = row.createCell(colIdx++);
+            cell7.setCellValue(completionStatus);
+            
+            if(completionStatus != null && completionStatus.length() > wrapLimit) {
+            	cell7.setCellStyle(wrapCellStyle);
+            } else {
+            	cell7.setCellStyle(wrapCellStyle);
+            }
         }
         
         // 컬럼 너비 자동 조정
@@ -192,7 +207,7 @@ public class ExcelDownloadService {
             
             int extraPadding = 1024;
             
-            if(i == 1 || i == 3 || i == 5) {
+            if(i == 1 || i == 3 || i == 5 | i==7) {
             	extraPadding = 3072;
             }
             
@@ -200,7 +215,7 @@ public class ExcelDownloadService {
         }
 
         // 헤더 작성(EducationEntity)
-        Row headerRow2 = sheet.createRow(34);
+        Row headerRow2 = sheet.createRow(3332);
         String[] headers2 = {"번호", "차수", "훈련제목", "훈련내용"};
         for (int i = 0; i < headers2.length; i++) {
             Cell cell = headerRow2.createCell(i);
@@ -209,7 +224,7 @@ public class ExcelDownloadService {
         }
 
         // 데이터 작성(EducationEntity)
-        int rowIdx2 = 35;
+        int rowIdx2 = 3333;
         // final int wrapLimit = 50;
         
         for (EducationEntity data : EducationDataList) {
@@ -218,7 +233,7 @@ public class ExcelDownloadService {
 
             Cell cell0 = row.createCell(colIdx++); // 0열 1행
             cell0.setCellValue(data.getId());
-            cell0.setCellStyle(cellStyle);
+            cell0.setCellStyle(cellStyle2);
 
             Cell cell1 = row.createCell(colIdx++);
             cell1.setCellValue(data.getSession());
@@ -228,9 +243,15 @@ public class ExcelDownloadService {
             cell2.setCellValue(data.getTrainingTitle());
             cell2.setCellStyle(cellStyle2);
 
+             String trainingContent = data.getTrainingContent();
             Cell cell3 = row.createCell(colIdx++);
-            cell3.setCellValue(data.getTrainingContent());
-            cell3.setCellStyle(cellStyle2);
+            cell3.setCellValue(trainingContent);
+            
+            if(trainingContent != null && trainingContent.length() > wrapLimit) {
+            	cell3.setCellStyle(wrapCellStyle2);
+            } else {
+            	cell3.setCellStyle(wrapCellStyle2);
+            }
 
         }
 
@@ -243,9 +264,9 @@ public class ExcelDownloadService {
             
             int extraPadding = 1024;
             
-            // if(i == 1 || i == 3 || i == 5) {
-            // 	extraPadding = 3072;
-            // }
+            if(i == 3) {
+            	extraPadding = 3072;
+            }
             
             sheet.setColumnWidth(i, sheet.getColumnWidth(i) + extraPadding);
         }

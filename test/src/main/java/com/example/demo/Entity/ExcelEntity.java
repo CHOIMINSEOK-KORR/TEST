@@ -37,7 +37,7 @@ public class ExcelEntity {
 	@Column(name = "total_score")
 	private Integer totalScore;
 	
-	@Column(name = "completion_status", length = 50)
+	@Column(name = "completion_status", length = 500)
 	private String completionStatus;
 
 }

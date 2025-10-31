@@ -35,7 +35,6 @@ public class ExcelController {
 		this.excelDownloadService = excelDownloadService;
 		this.excelUploadService = excelUploadService;
 	}
-	
 	// ==============================
 	
 	// 엑셀 다운로드
@@ -44,7 +43,7 @@ public class ExcelController {
         ByteArrayInputStream inputStream = excelDownloadService.exportExcel();
 
         HttpHeaders headers = new HttpHeaders();
-        // 엑셀 다운로드 형식
+        // 엑셀 다운로드 형식(attachment를 쓰면 다운로드가 된다)
         headers.add("Content-Disposition", "attachment; filename=excel_data.xlsx");
 
         return ResponseEntity
@@ -58,7 +57,8 @@ public class ExcelController {
     
     // 엑셀 업로드 페이지
 	@GetMapping("/upload-page")
-	public String uploadPage() { // 헤헤
+	public String uploadPage() {
+        System.out.println("작동 되나용");
 		return "uploadForm";
 	}
 	

@@ -1,10 +1,3 @@
-sourceSets {
-    main {
-        output.resourcesDir = sourceSets.main.java.outputDir
-    }
-}
-
-
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.5.7'
@@ -62,3 +55,8 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
+
+bootRun {
+    // Devtools가 강제로 활성화되도록 JVM 인자를 추가합니다.
+    jvmArgs = ["-Dspring.devtools.restart.enabled=true"]
+}
